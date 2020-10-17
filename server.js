@@ -22,16 +22,7 @@ app.get('/getLocation',(req, res)=>{
     console.log("req headers:"+JSON.stringify(req.headers))
     var ip = req.headers['x-forwarded-for']||'104.41.38.132';
         callIPStack(ip,(result)=>{
-            //var jsonRes=JSON.parse(result)
-            // var locationDetails={
-            //     ip:result.ip,
-            //     continent_name:result.continent_name ,
-            //     country_name:result.country_name,
-            //     region_name:result.region_name,
-            //     city:result.city,
-            //     latitude:result.latitude,
-            //     longitude:result.longitude
-            // }
+           
 
              res.render('res-location.ejs',{
                 ip:result.ip,
@@ -43,7 +34,7 @@ app.get('/getLocation',(req, res)=>{
                 longitude:result.longitude
         
              })
-            //res.json(locationDetails)
+           
         })
 
     
@@ -58,15 +49,15 @@ app.get('/getWeather',(req, res)=>{
             checkWeather(result.latitude,result.longitude,(result)=>{
                 //var jsonRes=JSON.parse(result)
                // console.log(result.weather[0].main)
-                var weatherResult={
-                    temperature: result.main.temp,
-                    description:result.weather[0].description,
-                    city:result.name,
-                    country:result.sys.country
-                    
-                }
+
+                res.render('res-weather.ejs',{
+                    Temperature:result.main.temp,
+                    Description:result.weather[0].description ,
+                    City:result.name,
+                    country:result.sys.country       
+                 })
                 
-                res.json(weatherResult)
+                //res.json(weatherResult)
             })   
         })
 
