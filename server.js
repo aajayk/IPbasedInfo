@@ -34,7 +34,8 @@ app.get('/getLocation',(req, res)=>{
             res.json(locationDetails)
         })
 
-    }else{
+    }
+    else{
         console.log("user details found")
         var locationDetails={
             ip:userDetails.ip,
@@ -46,6 +47,51 @@ app.get('/getLocation',(req, res)=>{
             longitude:userDetails.longitude,
         }
         res.json(locationDetails)
+    }
+
+})
+
+app.get('/getWeather',(req, res)=>{
+    
+    var ip = req.headers['x-forwarded-for']||'104.41.38.132';
+    if(!userDetails){
+        callIPStack(ip,(result)=>{
+            //var jsonRes=JSON.parse(result)
+            checkWeather(result.latitude,result.longitude,(result)=>{
+                //var jsonRes=JSON.parse(result)
+               // console.log(result.weather[0].main)
+                var weatherResult={
+                    temperature: result.main.temp,
+                    description:result.weather[0].description,
+                    city:result.name,
+                    country:result.sys.country
+                    
+                }
+                
+                res.json(weatherResult)
+            })
+
+           
+        })
+
+    }else{
+        console.log("user details found")
+        
+         var lat=userDetails.latitude
+         var long =userDetails.longitude
+        
+            checkWeather(lat,long,(result)=>{
+
+                var weatherResult={
+                    temperature: result.main.temp,
+                    description:result.weather[0].description,
+                    city:result.name,
+                    country:result.sys.country
+                    
+                }
+                
+                res.json(weatherResult)
+            })
     }
 
 })
@@ -72,5 +118,24 @@ function callIPStack(ip,callback){
         }
         else
         callback(new Error('IP Call failed'))
+    })
+}
+
+function checkWeather(lat,long,callback){
+    
+    var weather_app_key=process.env.WEATHER_APIKEY
+
+    const options = {
+        url: `http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${long}&appid=${weather_app_key}&units=metric`,
+        headers: {
+          'content-type': 'application/json'
+        }
+      };
+
+    request(options ,(req,res)=>{
+        
+        //console.log(res)
+            callback(JSON.parse(res.body))
+       
     })
 }
