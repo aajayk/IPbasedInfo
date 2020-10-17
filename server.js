@@ -8,14 +8,14 @@ const app = express();
 app.get('/getLocation',(req, res)=>{
     console.log("req headers:"+JSON.stringify(req.headers))
     console.log(req.headers['x-forwarded-for']||'105.41.38.132')
-    var ip = req.headers['x-forwarded-for']||'105.41.38.132';
+    var ip = req.headers['x-forwarded-for']||'104.41.38.132';
     callIPStack(ip,(result)=>{
         res.send(result)
     })
    // res.send('Ok')
 })
 
-app.listen(3000)
+app.listen(process.env.PORT || 3000)
 
 function callIPStack(ip,callback){
     var user_ip=ip
