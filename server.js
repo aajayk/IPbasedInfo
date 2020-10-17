@@ -19,7 +19,6 @@ app.get('/',(req, res)=>{
 app.get('/getLocation',(req, res)=>{
     console.log("req headers:"+JSON.stringify(req.headers))
     var ip = req.headers['x-forwarded-for']||'104.41.38.132';
-    if(!userDetails){
         callIPStack(ip,(result)=>{
             //var jsonRes=JSON.parse(result)
             var locationDetails={
@@ -34,27 +33,13 @@ app.get('/getLocation',(req, res)=>{
             res.json(locationDetails)
         })
 
-    }
-    else{
-        console.log("user details found")
-        var locationDetails={
-            ip:userDetails.ip,
-            continent_name:userDetails.continent_name ,
-            country_name:userDetails.country_name,
-            region_name:userDetails.region_name,
-            city:userDetails.city,
-            latitude:userDetails.latitude,
-            longitude:userDetails.longitude,
-        }
-        res.json(locationDetails)
-    }
+    
 
 })
 
 app.get('/getWeather',(req, res)=>{
     
     var ip = req.headers['x-forwarded-for']||'104.41.38.132';
-    if(!userDetails){
         callIPStack(ip,(result)=>{
             //var jsonRes=JSON.parse(result)
             checkWeather(result.latitude,result.longitude,(result)=>{
@@ -69,30 +54,8 @@ app.get('/getWeather',(req, res)=>{
                 }
                 
                 res.json(weatherResult)
-            })
-
-           
+            })   
         })
-
-    }else{
-        console.log("user details found")
-        
-         var lat=userDetails.latitude
-         var long =userDetails.longitude
-        
-            checkWeather(lat,long,(result)=>{
-
-                var weatherResult={
-                    temperature: result.main.temp,
-                    description:result.weather[0].description,
-                    city:result.name,
-                    country:result.sys.country
-                    
-                }
-                
-                res.json(weatherResult)
-            })
-    }
 
 })
 
