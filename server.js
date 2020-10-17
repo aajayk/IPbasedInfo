@@ -9,13 +9,13 @@ app.use(express.static("public"));
 
 
 app.get('/',(req, res)=>{
-    console.log("req headers:"+JSON.stringify(req.headers))
-    var ip = req.headers['x-forwarded-for']||'104.41.38.132';
-    callIPStack(ip,(result)=>{
-        //var jsonRes=JSON.parse(result)
-        res.json(result)
-    })
-   // res.send('Ok')
+    // console.log("req headers:"+JSON.stringify(req.headers))
+    // var ip = req.headers['x-forwarded-for']||'104.41.38.132';
+    // callIPStack(ip,(result)=>{
+    //     //var jsonRes=JSON.parse(result)
+    //     res.json(result)
+    // })
+    res.render('server.ejs')
 })
 
 app.get('/getLocation',(req, res)=>{
