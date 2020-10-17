@@ -8,3 +8,5 @@ To fetch the location details, API hosted by "https://ipstack.com/" is used.
 <li>
 To fetch the weather details, API hosted by "https://openweathermap.org/" is used.
 </li>
+<h2>Project Hosted on Heroku</h2>
+https://get-details.herokuapp.com/
