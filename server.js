@@ -4,7 +4,9 @@ const request = require('request')
 require('dotenv').config()
 
 const app = express();
-var userDetails;
+app.set('view-engine','ejs')
+app.use(express.static("public"));
+
 
 app.get('/',(req, res)=>{
     console.log("req headers:"+JSON.stringify(req.headers))
@@ -21,16 +23,27 @@ app.get('/getLocation',(req, res)=>{
     var ip = req.headers['x-forwarded-for']||'104.41.38.132';
         callIPStack(ip,(result)=>{
             //var jsonRes=JSON.parse(result)
-            var locationDetails={
+            // var locationDetails={
+            //     ip:result.ip,
+            //     continent_name:result.continent_name ,
+            //     country_name:result.country_name,
+            //     region_name:result.region_name,
+            //     city:result.city,
+            //     latitude:result.latitude,
+            //     longitude:result.longitude
+            // }
+
+             res.render('res-location.ejs',{
                 ip:result.ip,
                 continent_name:result.continent_name ,
                 country_name:result.country_name,
                 region_name:result.region_name,
                 city:result.city,
                 latitude:result.latitude,
-                longitude:result.longitude,
-            }
-            res.json(locationDetails)
+                longitude:result.longitude
+        
+             })
+            //res.json(locationDetails)
         })
 
     
